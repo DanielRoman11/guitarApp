@@ -2,24 +2,38 @@ import Header from "./components/Header";
 import Guitar from "./components/Guitar";
 import * as url from './data/db.json'
 import { useState } from "react";
+import { useEffect } from "react";
 
 function App() {
-  const [data] = useState(url.default);
-  console.log(data);
+  const [ data ] = useState(url.default);
+  const [ cart, setCart ] = useState([]);
+  const [ amount, setAmount ] = useState(0);
+
+  useEffect(()=>{
+    setCart(cart)
+  }, [cart]);
+
   return (
+
     <>
-      <Header/>
+      <Header
+        cart={cart}
+        setCart={setCart}
+        amount={amount}
+        setAmount={setAmount}
+      />
       <main className="container-xl mt-5">
           <h2 className="text-center">Nuestra Colección</h2>
             <div className="row mt-5">
-              {data.map(({price, name, description, image, id}) => (
+              {data.map((guitar) => (
                 <Guitar
-                  key={id}
-                  price={price}
-                  name={name}
-                  description={description}
-                  image={image}
-                />
+                  key={guitar.id}
+                  guitar={guitar}
+                  setCart={setCart}
+                  cart={cart}
+                  setAmount={setAmount}
+                  amount={amount}
+                  />
               ))}
             </div>
       </main>

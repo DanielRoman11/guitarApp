@@ -1,10 +1,19 @@
-export default function Guitar({
-  price,
-  name,
-  description,
-  image
-}){
-  
+export default function Guitar(props){  
+  const {guitar, setCart, cart, setAmount, amount} = props
+  const {
+    price,
+    name,
+    description,
+    image
+  } = guitar
+
+  const handleClick = (guitar) => {
+    if(!cart.includes(guitar)) {
+      setCart([...cart, guitar]) 
+      setAmount(amount + guitar.price)
+    }
+  }
+
   return (
     <div className="col-md-6 col-lg-4 my-4 row align-items-center">
       <div className="col-4">
@@ -17,6 +26,7 @@ export default function Guitar({
           <button 
               type="button"
               className="btn btn-dark w-100"
+              onClick={()=> handleClick(guitar)}
           >Agregar al Carrito</button>
       </div>
     </div>

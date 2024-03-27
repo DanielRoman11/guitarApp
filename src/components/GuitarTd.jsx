@@ -1,8 +1,6 @@
-export function GuitarTd({
-  price,
-  name,
-  image
-}){
+export function GuitarTd(props){
+  const { id, name, image, price } = props.item;
+
   return (
     <tr>
       <td>
@@ -29,6 +27,7 @@ export function GuitarTd({
           <button
               className="btn btn-danger"
               type="button"
+              onClick={() => props.removeItem(id, price)}
           >
               X
           </button>
