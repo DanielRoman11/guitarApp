@@ -1,16 +1,13 @@
 export default function Guitar(props){  
-  const {guitar, setCart, cart, setAmount, amount} = props
-  const {
-    price,
-    name,
-    description,
-    image
-  } = guitar
+  const { guitar, cart, setCart, setAmount, amount, setCantidad, cantidad } = props
+  const { id, price, name, description, image } = guitar
+
 
   const handleClick = (guitar) => {
     if(!cart.includes(guitar)) {
-      setCart([...cart, guitar]) 
-      setAmount(amount + guitar.price)
+      setCart([...cart, guitar])
+      setAmount(amount + price)
+      setCantidad([...cantidad, {id, times: 1}])
     }
   }
 

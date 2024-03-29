@@ -1,17 +1,19 @@
 import { GuitarTd } from "./GuitarTd";
 
 export default function Header(props) {
-    const { cart, setCart, amount, setAmount } = props;
+    const { cart, setCart, setAmount, amount, cantidad, setCantidad  } = props;
 
-    const removeItem = (id, price) => {
-        setCart(cart.filter((item) => item.id !== id));
-        setAmount(amount - price);
+    const removeItem = (id) => {
+        const thisItem = cart.find((item) => item.id === id)
+
+        setCart(cart.filter((item) =>  item !== thisItem))
+        setAmount(amount - (thisItem.price * cantidad.find((item) => item.id === id).times))
+        setCantidad(cantidad.filter((item) => item.id !== id))
     };
 
     const flushCart = () => {
-        setAmount(0); setCart([]);
+        setAmount(0); setCart([]); setCantidad([]);
     };
-    
 
     return (
         <header className="py-5 header">
@@ -56,6 +58,10 @@ export default function Header(props) {
                                                     key={item.id}
                                                     item={item}
                                                     removeItem={removeItem}
+                                                    cantidad={cantidad}
+                                                    setCantidad={setCantidad}
+                                                    amount={amount}
+                                                    setAmount={setAmount}
                                                 />
                                             )
                                         })
@@ -63,7 +69,9 @@ export default function Header(props) {
                                 </tbody>
                             </table>
 
-                            <p className="text-end">Total pagar: <span className="fw-bold">${amount}</span></p>
+                            <p className="text-end">Total pagar: 
+                                <span className="fw-bold">${amount}</span>
+                            </p>
                             <button 
                                 className="btn btn-dark w-100 mt-3 p-2"
                                 onClick={()=> flushCart()}
