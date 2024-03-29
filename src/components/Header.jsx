@@ -30,52 +30,49 @@ export default function Header(props) {
                     >
                         <img className="img-fluid" src="./public/img/carrito.png" alt="imagen carrito" />
 
-                        <div id="carrito" className="bg-white p-3">
-                            <p className="text-center">{
-                            cart.length == 0 
-                                ? `El carrito esta vacio` 
-                                : <span>Tienes <strong>{cart.length}</strong> {
-                                    cart.length === 1 
-                                        ? "item" 
-                                        : "items"
-                                    } en el carrito.</span>
-                            }</p>
-                            <table className="w-100 table">
-                                <thead>
-                                    <tr>
-                                        <th>Imagen</th>
-                                        <th>Nombre</th>
-                                        <th>Precio</th>
-                                        <th>Cantidad</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {
-                                        cart.map((item) => {
-                                            return (
-                                                <GuitarTd
-                                                    key={item.id}
-                                                    item={item}
-                                                    removeItem={removeItem}
-                                                    cantidad={cantidad}
-                                                    setCantidad={setCantidad}
-                                                    amount={amount}
-                                                    setAmount={setAmount}
-                                                />
-                                            )
-                                        })
-                                    }
-                                </tbody>
-                            </table>
+                    <div id="carrito" className="bg-white p-3">
+                        {
+                            cart.length === 0 
+                                ? <p className="text-center">El carrito esta vacio </p>
+                                : <><p className="text-center">Tienes <strong>{cart.length}</strong> { cart.length === 1 ? "item" : "items"} en el carrito.</p>
+                                    <table className="w-100 table">
+                                    <thead>
+                                        <tr>
+                                            <th>Imagen</th>
+                                            <th>Nombre</th>
+                                            <th>Precio</th>
+                                            <th>Cantidad</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {
+                                            cart.map((item) => {
+                                                return (
+                                                    <GuitarTd
+                                                        key={item.id}
+                                                        item={item}
+                                                        removeItem={removeItem}
+                                                        cantidad={cantidad}
+                                                        setCantidad={setCantidad}
+                                                        amount={amount}
+                                                        setAmount={setAmount}
+                                                    />
+                                                )
+                                            })
+                                        }
+                                    </tbody>
+                                </table>
 
-                            <p className="text-end">Total pagar: 
-                                <span className="fw-bold">${amount}</span>
-                            </p>
-                            <button 
-                                className="btn btn-dark w-100 mt-3 p-2"
-                                onClick={()=> flushCart()}
-                            >Vaciar Carrito</button>
+                                <p className="text-end">Total pagar: 
+                                    <span className="fw-bold">${amount}</span>
+                                </p>
+                                <button 
+                                    className="btn btn-dark w-100 mt-3 p-2"
+                                    onClick={()=> flushCart()}
+                                >Vaciar Carrito</button>
+                            </>
+                        }
                     </div>
                 </div>
                 </nav>

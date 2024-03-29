@@ -3,18 +3,20 @@ export function GuitarTd(props){
   const { removeItem, cantidad, setCantidad, amount, setAmount } = props;
 
   const addTimes = (id) => {
-    const thisTimes = cantidad.find((item) => item.id === id)
+    const cantidadCopy = [...cantidad]
+    const thisTimes = cantidadCopy.find((item) => item.id === id)
     thisTimes.times += 1 
-    setCantidad([...cantidad])
+    setCantidad([...cantidadCopy])
     setAmount(amount + price)
   }
 
   const lessTimes = (id) => {
-    const thisTimes = cantidad.find((item) => item.id === id)
+    const cantidadCopy = [...cantidad]
+    const thisTimes = cantidadCopy.find((item) => item.id === id)
 
     if(thisTimes.times > 1){
         thisTimes.times -= 1
-        setCantidad([...cantidad])
+        setCantidad([...cantidadCopy])
         setAmount(amount - price)
     }
   }
