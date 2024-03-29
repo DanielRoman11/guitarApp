@@ -7,7 +7,6 @@ import { useEffect } from "react";
 function App() {
   const [ data ] = useState(url.default);
   const [ cart, setCart ] = useState([]);
-  const [ amount, setAmount ] = useState(0);
   const [ cantidad, setCantidad ] = useState([]);
 
   useEffect(()=>{
@@ -19,8 +18,6 @@ function App() {
       <Header
         cart={cart}
         setCart={setCart}
-        amount={amount}
-        setAmount={setAmount}
         cantidad={cantidad}
         setCantidad={setCantidad}
       />
@@ -33,8 +30,6 @@ function App() {
                   guitar={guitar}
                   setCart={setCart}
                   cart={cart}
-                  setAmount={setAmount}
-                  amount={amount}
                   cantidad={cantidad}
                   setCantidad={setCantidad}
                   />

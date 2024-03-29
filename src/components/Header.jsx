@@ -1,18 +1,27 @@
+import { useMemo } from "react";
 import { GuitarTd } from "./GuitarTd";
 
 export default function Header(props) {
-    const { cart, setCart, setAmount, amount, cantidad, setCantidad  } = props;
+    const { cart, setCart, cantidad, setCantidad  } = props;
+
+    const isEmpty = useMemo(() => cart.length === 0, [cart])
+
+    const total = useMemo(
+        () => cart.reduce((totalAcc, item) => {
+            const thisQuantity = cantidad.find((i) => i.id == item.id)
+
+            return totalAcc + (item.price * thisQuantity.times)
+        }, 0), [cart, cantidad])
 
     const removeItem = (id) => {
         const thisItem = cart.find((item) => item.id === id)
 
         setCart(cart.filter((item) =>  item !== thisItem))
-        setAmount(amount - (thisItem.price * cantidad.find((item) => item.id === id).times))
         setCantidad(cantidad.filter((item) => item.id !== id))
     };
 
     const flushCart = () => {
-        setAmount(0); setCart([]); setCantidad([]);
+        setCart([]); setCantidad([]);
     };
 
     return (
@@ -32,20 +41,21 @@ export default function Header(props) {
 
                     <div id="carrito" className="bg-white p-3">
                         {
-                            cart.length === 0 
+                            isEmpty
                                 ? <p className="text-center">El carrito esta vacio </p>
-                                : <><p className="text-center">Tienes <strong>{cart.length}</strong> { cart.length === 1 ? "item" : "items"} en el carrito.</p>
+                                : <>
+                                    <p className="text-center">Tienes <strong>{cart.length}</strong> { cart.length === 1 ? "item" : "items"} en el carrito.</p>
                                     <table className="w-100 table">
-                                    <thead>
-                                        <tr>
-                                            <th>Imagen</th>
-                                            <th>Nombre</th>
-                                            <th>Precio</th>
-                                            <th>Cantidad</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
+                                        <thead>
+                                            <tr>
+                                                <th>Imagen</th>
+                                                <th>Nombre</th>
+                                                <th>Precio</th>
+                                                <th>Cantidad</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
                                         {
                                             cart.map((item) => {
                                                 return (
@@ -55,17 +65,15 @@ export default function Header(props) {
                                                         removeItem={removeItem}
                                                         cantidad={cantidad}
                                                         setCantidad={setCantidad}
-                                                        amount={amount}
-                                                        setAmount={setAmount}
                                                     />
                                                 )
                                             })
                                         }
-                                    </tbody>
-                                </table>
+                                        </tbody>
+                                    </table>
 
                                 <p className="text-end">Total pagar: 
-                                    <span className="fw-bold">${amount}</span>
+                                    <span className="fw-bold">${total}</span>
                                 </p>
                                 <button 
                                     className="btn btn-dark w-100 mt-3 p-2"
