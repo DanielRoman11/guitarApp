@@ -1,24 +1,8 @@
-export function GuitarTd(props){
-  const { id, name, image, price } = props.item;
-  const { removeItem, cantidad, setCantidad } = props;
+export function GuitarTd({ removeItem, addToCart, cantidad, itemLessTimes, item }){
+  const { id, name, image, price } = item;
 
-  const addTimes = (id) => {
-    const cantidadCopy = [...cantidad]
-    const thisTimes = cantidadCopy.find((item) => item.id === id)
-    thisTimes.times += 1 
-    setCantidad([...cantidadCopy])
-  }
-
-  const lessTimes = (id) => {
-    const cantidadCopy = [...cantidad]
-    const thisTimes = cantidadCopy.find((item) => item.id === id)
-
-    if(thisTimes.times > 1){
-        thisTimes.times -= 1
-        setCantidad([...cantidadCopy])
-    }
-  }
-
+  const itemsAdded = cantidad.find((item) => item.id === id).times;
+  
   return (
     <tr>
       <td>
@@ -30,17 +14,15 @@ export function GuitarTd(props){
           <button
               type="button"
               className="btn btn-dark"
-              onClick={() => lessTimes(id)}
+              onClick={() => itemLessTimes(id)}
           >
               -
           </button>
-              {
-                cantidad.find((item) => item.id === id).times
-              }
+              {itemsAdded}
           <button
               type="button"
               className="btn btn-dark"
-              onClick={() => addTimes(id)}
+              onClick={() => addToCart(item)}
           >
               +
           </button>

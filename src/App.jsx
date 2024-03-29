@@ -2,16 +2,58 @@ import Header from "./components/Header";
 import Guitar from "./components/Guitar";
 import * as url from './data/db.json'
 import { useState } from "react";
-import { useEffect } from "react";
+import { useMemo } from "react";
 
 function App() {
   const [ data ] = useState(url.default);
   const [ cart, setCart ] = useState([]);
   const [ cantidad, setCantidad ] = useState([]);
 
-  useEffect(()=>{
-    setCart(cart)
-  }, [cart]);
+  const MAX_TIMES = 5
+  const isCartEmpty = useMemo(() => cart.length === 0, [cart])
+
+  function addToCart(item) {
+    const id = item.id;   
+
+    if(!cart.includes(item)) {
+      setCart([...cart, item]);
+      setCantidad([...cantidad, {id, times: 1}]);
+    } else {
+      const cantidadCopy = [...cantidad];
+      const thisTimes = cantidadCopy.find((item) => item.id === id);
+      
+      if(thisTimes.times < MAX_TIMES){
+        thisTimes.times += 1;
+        setCantidad([...cantidadCopy]);
+      }
+    }
+  }
+
+  const itemLessTimes = (id) => {
+    const cantidadCopy = [...cantidad]
+    const thisTimes = cantidadCopy.find((item) => item.id === id)
+
+    if(thisTimes.times > 1){
+        thisTimes.times -= 1
+        setCantidad([...cantidadCopy])
+    }
+  }
+
+  const removeItem = (id) => {
+    const thisItem = cart.find((item) => item.id === id)
+
+    setCart(cart.filter((item) => item !== thisItem))
+    setCantidad(cantidad.filter((item) => item.id !== id))
+  };
+
+  const flushCart = () => { setCart([]); setCantidad([]) };
+
+  const totalPrice = useMemo(
+    () => cart.reduce((totalAcc, item) => {
+        const thisQuantity = cantidad.find((i) => i.id == item.id)
+
+        return totalAcc + (item.price * thisQuantity.times)
+    }, 0), [cart, cantidad])
 
   return (
     <>
@@ -20,6 +62,12 @@ function App() {
         setCart={setCart}
         cantidad={cantidad}
         setCantidad={setCantidad}
+        addToCart={addToCart}
+        itemLessTimes={itemLessTimes}
+        removeItem={removeItem}
+        isCartEmpty={isCartEmpty}
+        flushCart={flushCart}
+        totalPrice={totalPrice}
       />
       <main className="container-xl mt-5">
           <h2 className="text-center">Nuestra Colección</h2>
@@ -28,11 +76,8 @@ function App() {
                 <Guitar
                   key={guitar.id}
                   guitar={guitar}
-                  setCart={setCart}
-                  cart={cart}
-                  cantidad={cantidad}
-                  setCantidad={setCantidad}
-                  />
+                  addToCart={addToCart}
+                />
               ))}
             </div>
       </main>

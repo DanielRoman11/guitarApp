@@ -1,14 +1,5 @@
-export default function Guitar(props){  
-  const { guitar, cart, setCart, setCantidad, cantidad } = props
-  const { id, price, name, description, image } = guitar
-
-
-  const handleClick = (guitar) => {
-    if(!cart.includes(guitar)) {
-      setCart([...cart, guitar])
-      setCantidad([...cantidad, {id, times: 1}])
-    }
-  }
+export default function Guitar({guitar, addToCart}){  
+  const { price, name, description, image } = guitar
 
   return (
     <div className="col-md-6 col-lg-4 my-4 row align-items-center">
@@ -22,7 +13,7 @@ export default function Guitar(props){
           <button 
               type="button"
               className="btn btn-dark w-100"
-              onClick={()=> handleClick(guitar)}
+              onClick={()=> addToCart(guitar)}
           >Agregar al Carrito</button>
       </div>
     </div>

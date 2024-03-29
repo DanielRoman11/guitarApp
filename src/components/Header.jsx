@@ -1,28 +1,7 @@
-import { useMemo } from "react";
 import { GuitarTd } from "./GuitarTd";
 
 export default function Header(props) {
-    const { cart, setCart, cantidad, setCantidad  } = props;
-
-    const isEmpty = useMemo(() => cart.length === 0, [cart])
-
-    const total = useMemo(
-        () => cart.reduce((totalAcc, item) => {
-            const thisQuantity = cantidad.find((i) => i.id == item.id)
-
-            return totalAcc + (item.price * thisQuantity.times)
-        }, 0), [cart, cantidad])
-
-    const removeItem = (id) => {
-        const thisItem = cart.find((item) => item.id === id)
-
-        setCart(cart.filter((item) =>  item !== thisItem))
-        setCantidad(cantidad.filter((item) => item.id !== id))
-    };
-
-    const flushCart = () => {
-        setCart([]); setCantidad([]);
-    };
+    const { cart, cantidad, addToCart, itemLessTimes, removeItem, isCartEmpty, flushCart, totalPrice } = props;
 
     return (
         <header className="py-5 header">
@@ -41,7 +20,7 @@ export default function Header(props) {
 
                     <div id="carrito" className="bg-white p-3">
                         {
-                            isEmpty
+                            isCartEmpty
                                 ? <p className="text-center">El carrito esta vacio </p>
                                 : <>
                                     <p className="text-center">Tienes <strong>{cart.length}</strong> { cart.length === 1 ? "item" : "items"} en el carrito.</p>
@@ -64,7 +43,8 @@ export default function Header(props) {
                                                         item={item}
                                                         removeItem={removeItem}
                                                         cantidad={cantidad}
-                                                        setCantidad={setCantidad}
+                                                        addToCart={addToCart}
+                                                        itemLessTimes={itemLessTimes}
                                                     />
                                                 )
                                             })
@@ -73,7 +53,7 @@ export default function Header(props) {
                                     </table>
 
                                 <p className="text-end">Total pagar: 
-                                    <span className="fw-bold">${total}</span>
+                                    <span className="fw-bold">${totalPrice}</span>
                                 </p>
                                 <button 
                                     className="btn btn-dark w-100 mt-3 p-2"
