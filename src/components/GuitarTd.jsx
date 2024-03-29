@@ -1,12 +1,10 @@
-export function GuitarTd({ removeItem, addToCart, cantidad, itemLessTimes, item }){
+export function GuitarTd({ removeItem, addToCart, itemsAdded, itemLessTimes, item }){
   const { id, name, image, price } = item;
 
-  const itemsAdded = cantidad.find((item) => item.id === id).times;
-  
   return (
     <tr>
       <td>
-          <img className="img-fluid" src={`./public/img/${image}.jpg`} alt="imagen guitarra" />
+          <img className="img-fluid" src={`/img/${image}.jpg`} alt="imagen guitarra" />
       </td>
       <td>{name}</td>
       <td className="fw-bold">${price}</td>
@@ -18,7 +16,7 @@ export function GuitarTd({ removeItem, addToCart, cantidad, itemLessTimes, item 
           >
               -
           </button>
-              {itemsAdded}
+              {itemsAdded(id)}
           <button
               type="button"
               className="btn btn-dark"
